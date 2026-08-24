@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New Inquiry Received</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background-color: #f3f4f6;
+      color: #1f2937;
+      line-height: 1.6;
+    }
+    .container {
+      max-width: 600px;
+      margin: 40px auto;
+      background: #ffffff;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+    .header {
+      background: linear-gradient(135deg, #7c3aed, #6d28d9);
+      padding: 40px 30px;
+      text-align: center;
+    }
+    .header h1 {
+      color: #ffffff;
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .header p {
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 16px;
+    }
+    .logo {
+      font-size: 48px;
+      margin-bottom: 10px;
+    }
+    .content {
+      padding: 40px 30px;
+    }
+    .content h2 {
+      font-size: 22px;
+      color: #1f2937;
+      margin-bottom: 16px;
+    }
+    .content p {
+      color: #4b5563;
+      margin-bottom: 16px;
+      font-size: 16px;
+    }
+    .inquiry-card {
+      background: #f9fafb;
+      border-radius: 12px;
+      padding: 20px;
+      margin: 20px 0;
+      border: 1px solid #e5e7eb;
+    }
+    .inquiry-card .field {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    .inquiry-card .field:last-child {
+      border-bottom: none;
+    }
+    .inquiry-card .label {
+      color: #6b7280;
+      font-weight: 500;
+      font-size: 14px;
+    }
+    .inquiry-card .value {
+      color: #1f2937;
+      font-weight: 600;
+      font-size: 14px;
+    }
+    .inquiry-card .value.priority-high {
+      color: #dc2626;
+    }
+    .inquiry-card .value.priority-medium {
+      color: #f59e0b;
+    }
+    .inquiry-card .value.priority-low {
+      color: #22c55e;
+    }
+    .message-box {
+      background: #ffffff;
+      padding: 16px;
+      border-radius: 8px;
+      border: 1px solid #e5e7eb;
+      margin: 12px 0;
+    }
+    .message-box p {
+      margin: 0;
+      color: #1f2937;
+      font-size: 15px;
+      line-height: 1.8;
+    }
+    .button-container {
+      text-align: center;
+      margin: 30px 0 20px;
+    }
+    .btn-primary {
+      display: inline-block;
+      padding: 14px 40px;
+      background: linear-gradient(135deg, #7c3aed, #6d28d9);
+      color: #ffffff;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 16px;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(124, 58, 237, 0.4);
+    }
+    .btn-secondary {
+      display: inline-block;
+      padding: 12px 30px;
+      background: #ffffff;
+      color: #7c3aed;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 14px;
+      border: 2px solid #7c3aed;
+      margin-left: 10px;
+      transition: background 0.2s;
+    }
+    .btn-secondary:hover {
+      background: #f5f3ff;
+    }
+    .footer {
+      padding: 24px 30px;
+      border-top: 1px solid #e5e7eb;
+      text-align: center;
+      background: #f9fafb;
+    }
+    .footer p {
+      color: #6b7280;
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+    .badge {
+      display: inline-block;
+      padding: 4px 12px;
+      background: #ede9fe;
+      color: #5b21b6;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .badge-urgent {
+      background: #fef2f2;
+      color: #991b1b;
+    }
+    .response-tips {
+      background: #f0fdf4;
+      border-radius: 8px;
+      padding: 16px;
+      margin: 20px 0;
+      border-left: 4px solid #22c55e;
+    }
+    .response-tips p {
+      color: #166534;
+      font-size: 14px;
+      margin: 0;
+    }
+    @media (max-width: 600px) {
+      .container {
+        margin: 20px;
+      }
+      .header {
+        padding: 30px 20px;
+      }
+      .header h1 {
+        font-size: 24px;
+      }
+      .content {
+        padding: 30px 20px;
+      }
+      .btn-primary {
+        padding: 12px 30px;
+        font-size: 15px;
+        display: block;
+        width: 100%;
+      }
+      .btn-secondary {
+        display: block;
+        width: 100%;
+        margin: 10px 0 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="logo">📩</div>
+      <h1>New Inquiry Received</h1>
+      <p>You have a new inquiry from a potential customer</p>
+    </div>
+
+    <div class="content">
+      <h2>Hi {{supplierName}},</h2>
+      <p>A new inquiry has been received for <strong>{{materialName}}</strong>. Here are the details:</p>
+
+      <div class="inquiry-card">
+        <div class="field">
+          <span class="label">📦 Material</span>
+          <span class="value">{{materialName}}</span>
+        </div>
+        <div class="field">
+          <span class="label">📐 Quantity</span>
+          <span class="value">{{quantity}} {{unit}}</span>
+        </div>
+        <div class="field">
+          <span class="label">👤 Customer</span>
+          <span class="value">{{customerName}}</span>
+        </div>
+        <div class="field">
+          <span class="label">📧 Customer Email</span>
+          <span class="value">{{customerEmail}}</span>
+        </div>
+        <div class="field">
+          <span class="label">📞 Customer Phone</span>
+          <span class="value">{{customerPhone}}</span>
+        </div>
+        <div class="field">
+          <span class="label">📍 Location</span>
+          <span class="value">{{location}}</span>
+        </div>
+        <div class="field">
+          <span class="label">🚀 Priority</span>
+          <span class="value priority-{{priority}}">{{priority}}</span>
+        </div>
+        <div class="field">
+          <span class="label">📅 Received</span>
+          <span class="value">{{receivedAt}}</span>
+        </div>
+      </div>
+
+      <div style="margin: 20px 0;">
+        <div style="font-weight: 600; color: #1f2937; margin-bottom: 8px;">💬 Message:</div>
+        <div class="message-box">
+          <p>{{message}}</p>
+        </div>
+      </div>
+
+      <div class="response-tips">
+        <p>💡 <strong>Quick Tip:</strong> Respond to this inquiry promptly to increase your chances of securing the order. Customers appreciate quick responses!</p>
+      </div>
+
+      <div class="button-container">
+        <a href="{{inquiryUrl}}" class="btn-primary">📨 View & Respond</a>
+        <a href="{{supplierDashboardUrl}}" class="btn-secondary">📊 Go to Dashboard</a>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>© 2024 Construction Material Portal. All rights reserved.</p>
+      <p style="font-size: 12px; color: #9ca3af;">
+        This is an automated notification. Please do not reply to this email.
+        <br>
+        Need help? Contact us at <a href="mailto:support@constructionportal.com" style="color: #2563eb; text-decoration: none;">support@constructionportal.com</a>
+      </p>
+    </div>
+  </div>
+</body>
+</html>

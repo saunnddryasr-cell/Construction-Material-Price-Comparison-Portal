@@ -1,0 +1,2 @@
+import MaterialCard from './MaterialCard';
+export default function MaterialList({ materials, loading = false }) { if (loading) return <div className="empty">Loading materials from the backend...</div>; return materials.length ? <div className="material-grid">{materials.map((material) => <MaterialCard key={material.id} material={material} />)}</div> : <div className="empty">No materials match that search.</div>; }

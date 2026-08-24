@@ -1,0 +1,9 @@
+{
+  "short_name": "Buildwise",
+  "name": "Buildwise Material Price Portal",
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#285b48",
+  "background_color": "#f5f1e8",
+  "icons": []
+}

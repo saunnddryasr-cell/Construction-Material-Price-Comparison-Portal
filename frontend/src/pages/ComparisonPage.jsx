@@ -1,0 +1,6 @@
+import { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import { getPriceComparison } from '../api/price.api';
+import ComparisonTable from '../components/comparison/ComparisonTable';
+import PriceChart from '../components/comparison/PriceChart';
+export default function ComparisonPage() { const [params] = useSearchParams(); const [comparison, setComparison] = useState(null); const [error, setError] = useState(''); const materialId = params.get('material') || 'cement'; useEffect(() => { getPriceComparison(materialId).then(({ data }) => setComparison(data.data)).catch(() => setError('Could not load comparison data from the backend.')); }, [materialId]); if (error) return <div className="container"><div className="empty">{error}</div></div>; if (!comparison) return <div className="container"><div className="empty">Loading comparison data from the backend...</div></div>; return <div className="container"><header className="page-header"><span className="eyebrow">Compare quotes</span><h1>{comparison.material.name}, side by side.</h1><p className="section-intro">{comparison.material.unit} · Austin, TX · Prices include supplier-reported availability.</p></header><div style={{ display: 'grid', gap: 18, paddingBottom: 70 }}><PriceChart trend={comparison.trend} /><ComparisonTable quotes={comparison.quotes} /></div></div>; }

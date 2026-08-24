@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body { font-family: Arial, sans-serif; color: #333; }
+    .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+    .header { background: #2563eb; color: white; padding: 20px; text-align: center; }
+    .content { padding: 20px; }
+    .button { display: inline-block; padding: 10px 20px; background: #2563eb; color: white; text-decoration: none; border-radius: 5px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Welcome to Construction Material Portal</h1>
+    </div>
+    <div class="content">
+      <p>Hi {{username}},</p>
+      <p>Welcome to the Construction Material Price Comparison Portal!</p>
+      <p>You can now:</p>
+      <ul>
+        <li>Compare material prices across suppliers</li>
+        <li>Discover verified suppliers</li>
+        <li>Save your favorite suppliers</li>
+        <li>Get price alerts</li>
+      </ul>
+      <a href="{{frontendUrl}}" class="button">Get Started</a>
+    </div>
+  </div>
+</body>
+</html>

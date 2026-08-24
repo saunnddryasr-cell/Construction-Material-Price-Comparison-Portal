@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{notificationTitle}}</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background-color: #f3f4f6;
+      color: #1f2937;
+      line-height: 1.6;
+    }
+    .container {
+      max-width: 600px;
+      margin: 40px auto;
+      background: #ffffff;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+    .header {
+      padding: 40px 30px;
+      text-align: center;
+    }
+    .header .icon {
+      font-size: 56px;
+      margin-bottom: 10px;
+    }
+    .header h1 {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .header p {
+      font-size: 16px;
+    }
+    .header.primary {
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      color: #ffffff;
+    }
+    .header.primary h1 {
+      color: #ffffff;
+    }
+    .header.primary p {
+      color: rgba(255, 255, 255, 0.9);
+    }
+    .header.success {
+      background: linear-gradient(135deg, #059669, #047857);
+      color: #ffffff;
+    }
+    .header.success h1 {
+      color: #ffffff;
+    }
+    .header.success p {
+      color: rgba(255, 255, 255, 0.9);
+    }
+    .header.warning {
+      background: linear-gradient(135deg, #d97706, #b45309);
+      color: #ffffff;
+    }
+    .header.warning h1 {
+      color: #ffffff;
+    }
+    .header.warning p {
+      color: rgba(255, 255, 255, 0.9);
+    }
+    .header.danger {
+      background: linear-gradient(135deg, #dc2626, #b91c1c);
+      color: #ffffff;
+    }
+    .header.danger h1 {
+      color: #ffffff;
+    }
+    .header.danger p {
+      color: rgba(255, 255, 255, 0.9);
+    }
+    .header.info {
+      background: linear-gradient(135deg, #7c3aed, #6d28d9);
+      color: #ffffff;
+    }
+    .header.info h1 {
+      color: #ffffff;
+    }
+    .header.info p {
+      color: rgba(255, 255, 255, 0.9);
+    }
+    .content {
+      padding: 40px 30px;
+    }
+    .content h2 {
+      font-size: 22px;
+      color: #1f2937;
+      margin-bottom: 16px;
+    }
+    .content p {
+      color: #4b5563;
+      margin-bottom: 16px;
+      font-size: 16px;
+    }
+    .notification-card {
+      background: #f9fafb;
+      border-radius: 12px;
+      padding: 20px;
+      margin: 20px 0;
+      border: 1px solid #e5e7eb;
+    }
+    .notification-card .meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+      color: #6b7280;
+      margin-bottom: 12px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    .notification-card .meta .type {
+      font-weight: 600;
+    }
+    .notification-card .body {
+      color: #1f2937;
+      font-size: 15px;
+    }
+    .notification-card .body .highlight {
+      background: #fef3c7;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-weight: 600;
+      color: #92400e;
+    }
+    .action-box {
+      background: #f0fdf4;
+      border-radius: 8px;
+      padding: 16px;
+      margin: 20px 0;
+      border-left: 4px solid #22c55e;
+    }
+    .action-box p {
+      color: #166534;
+      font-size: 14px;
+      margin: 0;
+    }
+    .button-container {
+      text-align: center;
+      margin: 30px 0 20px;
+    }
+    .btn-primary {
+      display: inline-block;
+      padding: 14px 40px;
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      color: #ffffff;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 16px;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+    }
+    .btn-success {
+      display: inline-block;
+      padding: 14px 40px;
+      background: linear-gradient(135deg, #059669, #047857);
+      color: #ffffff;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 16px;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
+    }
+    .btn-success:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(5, 150, 105, 0.4);
+    }
+    .btn-secondary {
+      display: inline-block;
+      padding: 12px 30px;
+      background: #ffffff;
+      color: #2563eb;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 14px;
+      border: 2px solid #2563eb;
+      margin-left: 10px;
+      transition: background 0.2s;
+    }
+    .btn-secondary:hover {
+      background: #eff6ff;
+    }
+    .badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .badge-primary {
+      background: #dbeafe;
+      color: #1e40af;
+    }
+    .badge-success {
+      background: #d1fae5;
+      color: #065f46;
+    }
+    .badge-warning {
+      background: #fef3c7;
+      color: #92400e;
+    }
+    .badge-danger {
+      background: #fef2f2;
+      color: #991b1b;
+    }
+    .badge-info {
+      background: #ede9fe;
+      color: #5b21b6;
+    }
+    .footer {
+      padding: 24px 30px;
+      border-top: 1px solid #e5e7eb;
+      text-align: center;
+      background: #f9fafb;
+    }
+    .footer p {
+      color: #6b7280;
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+    @media (max-width: 600px) {
+      .container {
+        margin: 20px;
+      }
+      .header {
+        padding: 30px 20px;
+      }
+      .header h1 {
+        font-size: 24px;
+      }
+      .content {
+        padding: 30px 20px;
+      }
+      .btn-primary, .btn-success {
+        padding: 12px 30px;
+        font-size: 15px;
+        display: block;
+        width: 100%;
+      }
+      .btn-secondary {
+        display: block;
+        width: 100%;
+        margin: 10px 0 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header {{headerType}}">
+      <div class="icon">{{headerIcon}}</div>
+      <h1>{{headerTitle}}</h1>
+      <p>{{headerSubtitle}}</p>
+    </div>
+
+    <div class="content">
+      <h2>Hi {{username}},</h2>
+      <p>{{greetingMessage}}</p>
+
+      <div class="notification-card">
+        <div class="meta">
+          <span class="type">
+            <span class="badge badge-{{badgeType}}">{{notificationType}}</span>
+          </span>
+          <span>{{notificationTime}}</span>
+        </div>
+        <div class="body">
+          {{notificationBody}}
+        </div>
+      </div>
+
+      {{#if actionMessage}}
+      <div class="action-box">
+        <p>💡 <strong>Action Required:</strong> {{actionMessage}}</p>
+      </div>
+      {{/if}}
+
+      {{#if details}}
+      <div style="background: #f9fafb; border-radius: 8px; padding: 16px; margin: 16px 0;">
+        {{#each details}}
+        <div style="display: flex; justify-content: space-between; padding: 4px 0; font-size: 14px;">
+          <span style="color: #6b7280;">{{this.label}}</span>
+          <span style="color: #1f2937; font-weight: 500;">{{this.value}}</span>
+        </div>
+        {{/each}}
+      </div>
+      {{/if}}
+
+      <div class="button-container">
+        <a href="{{primaryActionUrl}}" class="btn-{{buttonType}}">{{primaryActionText}}</a>
+        {{#if secondaryActionUrl}}
+        <a href="{{secondaryActionUrl}}" class="btn-secondary">{{secondaryActionText}}</a>
+        {{/if}}
+      </div>
+
+      <p style="font-size: 14px; color: #6b7280; text-align: center; margin-top: 20px;">
+        <span class="badge badge-{{badgeType}}">📌 {{notificationId}}</span>
+      </p>
+    </div>
+
+    <div class="footer">
+      <p>© 2024 Construction Material Portal. All rights reserved.</p>
+      <p style="font-size: 12px; color: #9ca3af;">
+        This is an automated notification. Please do not reply to this email.
+        <br>
+        Need help? Contact us at <a href="mailto:support@constructionportal.com" style="color: #2563eb; text-decoration: none;">support@constructionportal.com</a>
+      </p>
+    </div>
+  </div>
+</body>
+</html>

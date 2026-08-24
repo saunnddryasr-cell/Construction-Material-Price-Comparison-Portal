@@ -1,0 +1,35 @@
+{
+  "watch": ["src"],
+  "ext": "js,json",
+  "ignore": [
+    "src/**/*.test.js",
+    "node_modules",
+    "logs",
+    "uploads",
+    "coverage",
+    ".git"
+  ],
+  "exec": "node src/app.js",
+  "env": {
+    "NODE_ENV": "development",
+    "DEBUG": "app:*"
+  },
+  "delay": 1000,
+  "events": {
+    "start": "echo '🚀 Server starting...'",
+    "restart": "echo '🔄 Server restarting...'",
+    "crash": "echo '💥 Server crashed!'",
+    "exit": "echo '🛑 Server stopped'"
+  },
+  "signal": "SIGTERM",
+  "stdin": false,
+  "verbose": true,
+  "legacyWatch": false,
+  "pollingInterval": 1000,
+  "watchOptions": {
+    "followSymlinks": true,
+    "usePolling": false,
+    "useFsEvents": true,
+    "interval": 1000
+  }
+}
