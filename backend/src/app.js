@@ -44,6 +44,7 @@ const allowedOrigins = [
   process.env.FRONTEND_URL,
   process.env.FRONTEND_URL_PROD,
   'https://construction-material-price-compari-six.vercel.app',
+  'https://construction-material-price-comparison-portal-axsw-6l3wgywzw.vercel.app',
   'http://localhost:3000',
   'http://localhost:5173',
   'http://localhost:5174',
