@@ -53,6 +53,16 @@ app.use((req, res, next) => {
   next();
 });
 
+// Serverless requests do not run startServer, so initialize MongoDB on demand.
+app.use('/api', async (req, res, next) => {
+  try {
+    await connectDatabase();
+    next();
+  } catch (error) {
+    next(error);
+  }
+});
+
 // Routes
 app.get('/', (req, res) => {
   res.json({
