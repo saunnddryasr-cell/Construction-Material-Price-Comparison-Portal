@@ -1,5 +1,5 @@
 const request = require('supertest');
-const { app } = require('../../src/app');
+const app = require('../../app');
 const User = require('../../models/User.model');
 
 describe('Authentication API', () => {
@@ -7,8 +7,10 @@ describe('Authentication API', () => {
     username: 'testuser',
     email: 'test@example.com',
     password: 'Test1234',
-    phone: '9876543210',
     role: 'contractor',
+    profile: {
+      phone: '9876543210',
+    },
   };
 
   describe('POST /api/auth/register', () => {
@@ -61,7 +63,7 @@ describe('Authentication API', () => {
           password: 'wrongpassword',
         });
 
-      expect(response.status).toBe(400);
+      expect(response.status).toBe(401);
       expect(response.body.success).toBe(false);
     });
   });

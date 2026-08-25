@@ -4,14 +4,16 @@ const { MongoMemoryServer } = require('mongodb-memory-server');
 let mongoServer;
 
 beforeAll(async () => {
-  mongoServer = await MongoMemoryServer.create();
+  mongoServer = await MongoMemoryServer.create({
+    instance: { storageEngine: 'wiredTiger' },
+  });
   const mongoUri = mongoServer.getUri();
   await mongoose.connect(mongoUri);
 });
 
 afterAll(async () => {
   await mongoose.disconnect();
-  await mongoServer.stop();
+  if (mongoServer) await mongoServer.stop();
 });
 
 afterEach(async () => {
