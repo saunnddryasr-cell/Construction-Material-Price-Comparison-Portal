@@ -1,6 +1,5 @@
 const express = require('express');
 const dotenv = require('dotenv');
-const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 const { connectDatabase } = require('./config/database');
@@ -40,16 +39,26 @@ const quotes = {
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors({ origin: true, credentials: true }));
+const allowedOrigins = [
+  process.env.CORS_ORIGIN,
+  process.env.FRONTEND_URL,
+  process.env.FRONTEND_URL_PROD,
+  'http://localhost:3000',
+  'http://localhost:5173',
+  'http://localhost:5174',
+].filter(Boolean).flatMap((value) => value.split(',').map((origin) => origin.trim()));
 
-// CORS
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  if (req.method === 'OPTIONS') {
-    return res.sendStatus(200);
+  const origin = req.headers.origin;
+  if (origin && allowedOrigins.includes(origin)) {
+    res.header('Access-Control-Allow-Origin', origin);
+    res.header('Access-Control-Allow-Credentials', 'true');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Refresh-Token');
+    res.header('Access-Control-Expose-Headers', 'Authorization, X-Refresh-Token, X-Total-Count');
+    res.header('Vary', 'Origin');
   }
+  if (req.method === 'OPTIONS') return res.sendStatus(204);
   next();
 });
 
