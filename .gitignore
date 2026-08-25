@@ -8,3 +8,5 @@ uploads/
 *.log
 .DS_Store
 dist/
+.vercel
+.env*
