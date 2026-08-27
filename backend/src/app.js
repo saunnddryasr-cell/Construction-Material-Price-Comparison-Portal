@@ -1,4 +1,5 @@
-const express = require('express');
+const express = require('express');\
+const cors = require('cors')
 const dotenv = require('dotenv');
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
@@ -81,6 +82,18 @@ app.get('/', (req, res) => {
     timestamp: new Date().toISOString(),
   });
 });
+;
+
+
+// Allow all origins (for development)
+app.use(cors());
+
+// OR for production with specific origins
+app.use(cors({
+  origin: 'https://construction-material-price-compari-six.vercel.app',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
 app.get('/health', (req, res) => {
   res.json({
