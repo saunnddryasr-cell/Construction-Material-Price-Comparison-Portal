@@ -1,17 +1,36 @@
 const mongoose = require('mongoose');
-const dotenv = require('dotenv');
-dotenv.config();
 
-const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/construction-materials';
+let isConnected = false;
 
-async function connectDatabase() {
-  if (mongoose.connection.readyState === 1) return mongoose.connection;
-  await mongoose.connect(mongoUri, {
-    serverSelectionTimeoutMS: 5000,
-    maxPoolSize: 10,
-  });
-  console.log(`MongoDB connected: ${mongoUri}`);
-  return mongoose.connection;
-}
+const connectDatabase = async () => {
+  if (isConnected) {
+    console.log('Using existing database connection');
+    return mongoose.connection;
+  }
 
-module.exports = { connectDatabase, mongoUri };
+  try {
+    const mongoURI = process.env.MONGODB_URI || process.env.MONGODB_URI_PROD;
+    
+    if (!mongoURI) {
+      throw new Error('MongoDB URI is not defined in environment variables');
+    }
+
+    const options = {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      serverSelectionTimeoutMS: 5000,
+      socketTimeoutMS: 45000,
+    };
+
+    await mongoose.connect(mongoURI, options);
+    
+    isConnected = true;
+    console.log('MongoDB connected successfully');
+    return mongoose.connection;
+  } catch (error) {
+    console.error('MongoDB connection error:', error.message);
+    throw error;
+  }
+};
+
+module.exports = { connectDatabase };
