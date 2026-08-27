@@ -1,4 +1,4 @@
-const express = require('express');\
+const express = require('express');
 const cors = require('cors')
 const dotenv = require('dotenv');
 const jwt = require('jsonwebtoken');
@@ -234,3 +234,5 @@ async function startServer() {
 if (require.main === module) startServer();
 
 module.exports = app;
+
+
