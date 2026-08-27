@@ -1,5 +1,9 @@
 const express = require('express');
+<<<<<<< HEAD
 const cors = require('cors');
+=======
+const cors = require('cors')
+>>>>>>> 7bc7058f998d3f8b5b71debe14f74e34e20a8b27
 const dotenv = require('dotenv');
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
@@ -403,4 +407,10 @@ if (require.main === module) {
   startServer();
 }
 
+<<<<<<< HEAD
 module.exports = app;
+=======
+module.exports = app;
+
+
+>>>>>>> 7bc7058f998d3f8b5b71debe14f74e34e20a8b27
