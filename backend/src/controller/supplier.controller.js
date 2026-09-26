@@ -116,7 +116,7 @@ class SupplierController {
   async getDashboardStats(req, res, next) {
     try {
       const supplierId = req.user._id;
-
+      console.log('asdfgfdsasdfghgfdsdfgfdfvgb dashboard stats for supplier:');
       const materialCount = await Price.distinct('materialId', {
         supplierId,
         isActive: true,
