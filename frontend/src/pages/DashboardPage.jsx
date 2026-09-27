@@ -13,7 +13,7 @@ export default function DashboardPage() {
     const fetchDashboard = async () => {
       try {
         setLoading(true);
-        const { data } = await api.get('/dashboard/stats');
+        const { data } = await api.get('/dashboard');
         if (isMounted) {
           setDashboard(data.data);
           setError(null);
