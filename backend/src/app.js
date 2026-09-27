@@ -309,7 +309,7 @@ app.get('/api/prices/compare', async (req, res, next) => {
 });
 
 // Dashboard endpoint
-app.get('/api/dashboard', async (req, res, next) => {
+app.get('/dashboard', async (req, res, next) => {
   try {
     const [materialCount, supplierCount, priceCount] = await Promise.all([
       Material.countDocuments({ isActive: true }),
