@@ -1,1 +1,1 @@
-export const routes = { home: '/', materials: '/materials', compare: '/compare', dashboard: '/dashboard/stats' };
+export const routes = { home: '/', materials: '/materials', compare: '/compare', dashboard: '/dashboard' };
