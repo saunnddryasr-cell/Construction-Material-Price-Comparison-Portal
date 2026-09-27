@@ -5,10 +5,5 @@
   ],
   "routes": [
     { "src": "/(.*)", "dest": "api/index.js" }
-  ],
-  "deploymentProtection": {
-    "authentication": {
-      "allowedPaths": ["/api/*"]
-    }
-  }
+  ]
 }
