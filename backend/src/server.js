@@ -5,12 +5,12 @@ const { connectDatabase } = require('./config/database');
 
 const port = process.env.PORT || 5000;
 
-const startServer = async () => {
-  await connectDatabase();
-  return app.listen(port, () => {
-    console.log(`Construction Material Portal API listening on port ${port}`);
-  });
-};
+c// ✅ CORRECT — works everywhere
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on ${PORT}`);
+});
+
 
 if (require.main === module) {
   startServer().catch((error) => {

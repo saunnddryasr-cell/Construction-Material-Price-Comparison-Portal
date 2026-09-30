@@ -28,6 +28,11 @@ app.get('/health', (req, res) => {
     timestamp: new Date().toISOString(),
   });
 });
+app.get('/test', (res) => {
+  res.json({
+    message: 'Test endpoint is working!'
+  });
+});
 
 // Test endpoint
 app.get('/api/test', (req, res) => {
