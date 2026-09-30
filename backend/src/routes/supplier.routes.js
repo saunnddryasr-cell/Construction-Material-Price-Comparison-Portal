@@ -9,7 +9,7 @@ router.get('/', supplierController.getSuppliers);
 router.get('/:id', supplierController.getSupplierById);
 
 // Protected routes - Supplier only
-router.get('/dashboard/stats', authenticate, isSupplier, supplierController.getDashboardStats);
+router.get('/dashboard', authenticate, isSupplier, supplierController.getDashboardStats);
 router.get('/analytics', authenticate, isSupplier, supplierController.getAnalytics);
 
 // Admin routes
