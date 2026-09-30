@@ -1,7 +1,4 @@
-// backend/src/config/logger.js
 const winston = require('winston');
-
-const isServerless = process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME;
 
 const logger = winston.createLogger({
   level: process.env.LOG_LEVEL || 'info',
@@ -10,7 +7,6 @@ const logger = winston.createLogger({
     winston.format.errors({ stack: true }),
     winston.format.json()
   ),
-  // ✅ NO file transports — console only (works everywhere)
   transports: [
     new winston.transports.Console({
       format: winston.format.combine(
@@ -21,7 +17,6 @@ const logger = winston.createLogger({
   ],
 });
 
-// Stream for morgan (if you use it)
 const stream = {
   write: (message) => logger.info(message.trim()),
 };
