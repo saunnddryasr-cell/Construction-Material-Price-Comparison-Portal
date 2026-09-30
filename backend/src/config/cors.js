@@ -1,117 +1,49 @@
-/**
- * CORS Configuration
- * Centralized CORS settings for the application
- */
+const DEVELOPMENT_ORIGINS = [
+  'http://localhost:3000',
+  'http://localhost:5173',
+  'http://localhost:5174',
+];
 
-const cors= {
-  // Development settings
-  development: {
-    origin: '*',
-    credentials: true,
+const normalizeOrigin = (value) => {
+  try {
+    return new URL(value).origin;
+  } catch {
+    throw new Error('CORS_ORIGIN and FRONTEND_URL must contain valid origins');
+  }
+};
+
+const getCorsOptions = (env = process.env) => {
+  const configuredOrigins = [env.CORS_ORIGIN, env.FRONTEND_URL]
+    .filter(Boolean)
+    .flatMap((value) => value.split(','))
+    .map((value) => value.trim())
+    .filter(Boolean)
+    .map((value) => normalizeOrigin(value.trim()));
+  const allowedOrigins = new Set(configuredOrigins);
+
+  if (env.NODE_ENV !== 'production') {
+    DEVELOPMENT_ORIGINS.forEach((origin) => allowedOrigins.add(origin));
+  }
+
+  return {
+    origin(origin, callback) {
+      if (!origin || allowedOrigins.has(origin)) {
+        return callback(null, true);
+      }
+      return callback(new Error('Not allowed by CORS'));
+    },
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'X-Refresh-Token'],
+    allowedHeaders: [
+      'Content-Type',
+      'Authorization',
+      'X-Refresh-Token',
+      'Accept',
+      'Origin',
+    ],
     exposedHeaders: ['Authorization', 'X-Refresh-Token', 'X-Total-Count'],
-    maxAge: 86400,
-  },
-
-  // Production settings
-  production: {
-    origin: [
-      'https://construction-material-portal.com',
-      'https://www.construction-material-portal.com',
-      'https://api.construction-material-portal.com',
-    ],
     credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
-    allowedHeaders: [
-      'Content-Type',
-      'Authorization',
-      'X-Refresh-Token',
-      'X-API-Key',
-      'X-CSRF-Token',
-    ],
-    exposedHeaders: [
-      'Authorization',
-      'X-Refresh-Token',
-      'X-Total-Count',
-      'X-Page',
-      'X-Total-Pages',
-    ],
-    maxAge: 86400,
-  },
-
-  // Staging settings
-  staging: {
-    origin: [
-      'https://staging.construction-material-portal.com',
-      'https://preview.construction-material-portal.com',
-    ],
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'X-Refresh-Token'],
-    exposedHeaders: ['Authorization', 'X-Refresh-Token'],
-    maxAge: 86400,
-  },
-
-  // Public API settings (no authentication required)
-  public: {
-    origin: '*',
-    credentials: false,
-    methods: ['GET', 'HEAD', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Accept'],
-    exposedHeaders: ['X-Total-Count'],
-    maxAge: 86400,
-  },
-
-  // Admin API settings (stricter)
-  admin: {
-    origin: [
-      'https://admin.construction-material-portal.com',
-      'https://dashboard.construction-material-portal.com',
-    ],
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
-    allowedHeaders: [
-      'Content-Type',
-      'Authorization',
-      'X-Admin-Key',
-      'X-Admin-Token',
-    ],
-    exposedHeaders: ['Authorization', 'X-Admin-Token'],
-    maxAge: 86400,
-  },
+    optionsSuccessStatus: 204,
+  };
 };
 
-/**
- * Get CORS configuration based on environment
- */
-const getCorsConfig = (env = process.env.NODE_ENV) => {
-  switch (env) {
-    case 'production':
-      return corsConfig.production;
-    case 'staging':
-      return corsConfig.staging;
-    case 'development':
-    default:
-      return corsConfig.development;
-  }
-};
-
-/**
- * Get CORS configuration for specific route
- */
-const getCorsConfigForRoute = (path, env = process.env.NODE_ENV) => {
-  if (path.startsWith('/api/public') || path.startsWith('/api/health')) {
-    return corsConfig.public;
-  }
-  if (path.startsWith('/api/admin')) {
-    return corsConfig.admin;
-  }
-  return getCorsConfig(env);
-};
-
-module.exports = {
-  cors,
-  getCorsConfig,
-  getCorsConfigForRoute,
-};
+module.exports = { getCorsOptions };

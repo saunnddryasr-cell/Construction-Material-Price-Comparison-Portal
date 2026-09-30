@@ -6,16 +6,19 @@
 
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
-const { v4: uuidv4 } = require('uuid');
-const { logger } = require('../src/config/logger');
+const uuidv4 = crypto.randomUUID;
+const { logger } = require('../config/logger');
+const getJwtSecrets = require('../config/jwtSecrets');
+
+const { JWT_SECRET, JWT_REFRESH_SECRET } = getJwtSecrets();
 
 class TokenGenerator {
   /**
    * Default configuration
    */
   static config = {
-    jwtSecret: process.env.JWT_SECRET || 'default-jwt-secret',
-    jwtRefreshSecret: process.env.JWT_REFRESH_SECRET || 'default-refresh-secret',
+    jwtSecret: JWT_SECRET,
+    jwtRefreshSecret: JWT_REFRESH_SECRET,
     jwtExpiry: process.env.JWT_EXPIRY || '7d',
     jwtRefreshExpiry: process.env.JWT_REFRESH_EXPIRY || '30d',
     otpLength: 6,

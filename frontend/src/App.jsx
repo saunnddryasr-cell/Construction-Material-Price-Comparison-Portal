@@ -10,6 +10,7 @@ import InquiryPage from './pages/InquiryPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import AdminPanel from './pages/AdminPanel';
+import PrivateRoute from './components/common/PrivateRoute';
 
 export default function App() {
   return <div className="app-shell"><Navbar /><main><Routes>
@@ -18,7 +19,7 @@ export default function App() {
     <Route path="/compare" element={<ComparisonPage />} />
     <Route path="/dashboard" element={<DashboardPage />} />
     <Route path="/suppliers/:id" element={<SupplierProfilePage />} />
-    <Route path="/inquiry" element={<InquiryPage />} />
+    <Route path="/inquiry" element={<PrivateRoute><InquiryPage /></PrivateRoute>} />
     <Route path="/login" element={<LoginPage />} />
     <Route path="/register" element={<RegisterPage />} />
     <Route path="/admin" element={<AdminPanel />} />

@@ -1,10 +1,10 @@
 const express = require('express');
 const cors = require('cors');
-const cors = require('cors')
 const dotenv = require('dotenv');
-const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 const { connectDatabase } = require('./config/database');
+const { getCorsOptions } = require('./config/cors');
+const { errorHandler } = require('./middleware/error.middleware');
 const User = require('./models/User.model');
 const Material = require('./models/Material.model');
 const Price = require('./models/Price.model');
@@ -12,47 +12,7 @@ const Price = require('./models/Price.model');
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 5000;
-
-// ============================================
-// CORS CONFIGURATION - SINGLE SOURCE OF TRUTH
-// ============================================
-const allowedOrigins = [
-  'https://construction-material-price-compari-six.vercel.app',
-  'https://construction-material-price-comparison-portal-axsw-6l3wgywzw.vercel.app',
-  process.env.CORS_ORIGIN,
-  process.env.FRONTEND_URL,
-  process.env.FRONTEND_URL_PROD,
-  'http://localhost:3000',
-  'http://localhost:5173',
-  'http://localhost:5000'
-].filter(Boolean).flatMap((value) => 
-  value.split(',').map((origin) => origin.trim())
-);
-
-// Remove duplicates
-const uniqueOrigins = [...new Set(allowedOrigins)];
-
-app.use(cors({
-  origin: function (origin, callback) {
-    // Allow requests with no origin (like mobile apps or curl requests)
-    if (!origin) return callback(null, true);
-    
-    if (uniqueOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      console.log('Blocked CORS origin:', origin);
-      console.log('Allowed origins:', uniqueOrigins);
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Refresh-Token', 'Accept', 'Origin'],
-  exposedHeaders: ['Authorization', 'X-Refresh-Token', 'X-Total-Count'],
-  credentials: true,
-  preflightContinue: false,
-  optionsSuccessStatus: 204
-}));
+app.use(cors(getCorsOptions()));
 
 // Middleware
 app.use(express.json());
@@ -90,7 +50,6 @@ app.use('/api', async (req, res, next) => {
     res.status(503).json({
       success: false,
       message: 'Database connection failed',
-      error: error.message
     });
   }
 });
@@ -330,33 +289,10 @@ app.get('/dashboard', async (req, res, next) => {
   }
 });
 
-// Inquiries endpoint
-app.post('/api/inquiries', (req, res) => {
-  const { material, quantity, notes } = req.body;
-  if (!material || !quantity) {
-    return res.status(400).json({
-      success: false,
-      message: 'Material and quantity are required'
-    });
-  }
-  
-  res.status(201).json({
-    success: true,
-    data: {
-      inquiry: {
-        id: `inquiry-${Date.now()}`,
-        material,
-        quantity,
-        notes,
-        status: 'sent'
-      }
-    }
-  });
-});
-
 // Auth routes (if they exist)
 app.use('/api/auth', require('./routes/auth.routes'));
 app.use('/api/users', require('./routes/user.routes'));
+app.use('/api/inquiries', require('./routes/inquiry.routes'));
 app.use('/api/suppliers', require('./routes/supplier.routes'));
 app.use('/api/comparison', require('./routes/comparison.routes'));
 app.use('/api/favorites', require('./routes/favorite.routes'));
@@ -370,44 +306,6 @@ app.use((req, res) => {
   });
 });
 
-// Error handler
-app.use((err, req, res, next) => {
-  console.error('Error:', err.message);
-  console.error('Stack:', err.stack);
-  res.status(500).json({
-    success: false,
-    message: 'Internal server error',
-    error: process.env.NODE_ENV === 'development' ? err.message : undefined
-  });
-});
+app.use(errorHandler);
 
-// Start server function
-async function startServer() {
-  try {
-    await connectDatabase();
-  } catch (error) {
-    console.error(`MongoDB connection failed: ${error.message}`);
-  }
-
-  app.listen(PORT, () => {
-    console.log('═══════════════════════════════════════════════════');
-    console.log('🚀 Construction Material Portal API');
-    console.log(`📍 Server: http://localhost:${PORT}`);
-    console.log(`🗄️  MongoDB: ${mongoose.connection.readyState === 1 ? 'connected' : 'disconnected'}`);
-    console.log(`❤️  Health: http://localhost:${PORT}/health`);
-    console.log(`📡 API: http://localhost:${PORT}/api/test`);
-    console.log('═══════════════════════════════════════════════════');
-  });
-}
-
-if (require.main === module) {
-  startServer();
-}
-
-<<<<<<< HEAD
 module.exports = app;
-=======
-module.exports = app;
-
-
->>>>>>> 7bc7058f998d3f8b5b71debe14f74e34e20a8b27

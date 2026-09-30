@@ -2,8 +2,8 @@
 .env.*
 !.env.example
 node_modules/
-coverage/
-logs/
-uploads/
+dist/
 .vercel/
+coverage/
 *.log
+.DS_Store

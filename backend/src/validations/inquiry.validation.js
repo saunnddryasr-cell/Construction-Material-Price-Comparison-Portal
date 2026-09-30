@@ -41,10 +41,12 @@ const createInquiryValidation = (data) => {
       }),
 
     message: Joi.string()
+      .min(1)
       .max(1000)
-      .optional()
-      .allow('')
+      .required()
       .messages({
+        'string.empty': 'Message is required',
+        'any.required': 'Message is required',
         'string.max': 'Message cannot exceed 1000 characters',
       }),
 

@@ -74,24 +74,24 @@ export default function DashboardPage() {
     <div className="container">
       <header className="page-header">
         <span className="eyebrow">Your workspace</span>
-        <h1>Good morning, Alex.</h1>
+        <h1>Your sourcing dashboard.</h1>
         <p className="section-intro">
-          A quick view of your saved sourcing work.
+          A live overview of materials, suppliers, and available prices.
         </p>
       </header>
 
       <div className="dashboard-grid">
         <div className="stat">
-          <span>Saved materials</span>
-          <strong>{stats.savedMaterials ?? 0}</strong>
+          <span>Active materials</span>
+          <strong>{stats.materials ?? 0}</strong>
         </div>
         <div className="stat">
-          <span>Quotes received</span>
-          <strong>{stats.quotesReceived ?? 0}</strong>
+          <span>Active suppliers</span>
+          <strong>{stats.suppliers ?? 0}</strong>
         </div>
         <div className="stat">
-          <span>Average savings</span>
-          <strong>{stats.averageSavings ?? 0}%</strong>
+          <span>Price listings</span>
+          <strong>{stats.prices ?? 0}</strong>
         </div>
       </div>
 

@@ -1,0 +1,92 @@
+{
+  "info": {
+    "name": "Buildwise API",
+    "description": "Read-only health and API smoke checks for local or Vercel deployments.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/health"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('health endpoint returns 200', function () { pm.response.to.have.status(200); });",
+              "pm.test('health response includes database state', function () { pm.expect(pm.response.json()).to.have.property('database'); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "API smoke test",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/test"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('API smoke test returns 200', function () { pm.response.to.have.status(200); });",
+              "pm.test('API reports success', function () { pm.expect(pm.response.json().success).to.eql(true); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "List materials",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/materials"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('materials endpoint returns 200', function () { pm.response.to.have.status(200); });",
+              "pm.test('response includes a materials array', function () { pm.expect(pm.response.json().data.materials).to.be.an('array'); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Dashboard",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/dashboard"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('dashboard endpoint returns 200', function () { pm.response.to.have.status(200); });",
+              "pm.test('response includes dashboard statistics', function () { pm.expect(pm.response.json().data.stats).to.have.property('materials'); });"
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000",
+      "type": "default"
+    }
+  ]
+}

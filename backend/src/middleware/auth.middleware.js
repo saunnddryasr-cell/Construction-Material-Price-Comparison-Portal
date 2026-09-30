@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User.model');
 const { logger } = require('../config/logger');
+const getJwtSecrets = require('../config/jwtSecrets');
 
 /**
  * Authentication Middleware
@@ -11,8 +12,7 @@ const { logger } = require('../config/logger');
 // JWT CONFIGURATION
 // ============================================
 
-const JWT_SECRET = process.env.JWT_SECRET || 'default-jwt-secret';
-const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET || 'default-refresh-secret';
+const { JWT_SECRET, JWT_REFRESH_SECRET } = getJwtSecrets();
 
 // ============================================
 // AUTHENTICATION MIDDLEWARE
