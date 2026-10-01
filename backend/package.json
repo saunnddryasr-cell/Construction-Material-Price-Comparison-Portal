@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "src/app.js",
   "scripts": {
+    "build": "echo \"No build step required for this Node/Express backend\"",
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
     "test": "jest --runInBand"
