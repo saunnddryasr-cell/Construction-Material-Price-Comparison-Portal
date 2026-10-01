@@ -22,6 +22,7 @@ class AdminController {
         totalPrices,
         totalInquiries,
         pendingInquiries,
+        pendingSuppliers,
         totalReviews,
       ] = await Promise.all([
         User.countDocuments({ isActive: true }),
@@ -31,6 +32,7 @@ class AdminController {
         Price.countDocuments({ isActive: true }),
         Inquiry.countDocuments(),
         Inquiry.countDocuments({ status: 'pending' }),
+        User.countDocuments({ role: ROLES.SUPPLIER, isActive: true, 'profile.verified': { $ne: true } }),
         Review.countDocuments(),
       ]);
 
@@ -55,6 +57,7 @@ class AdminController {
           totalPrices,
           totalInquiries,
           pendingInquiries,
+          pendingSuppliers,
           totalReviews,
         },
         recentActivity: {
@@ -242,6 +245,21 @@ class AdminController {
     }
   }
 
+  async getRecentPriceUpdates(req, res, next) {
+    try {
+      const updates = await Price.find()
+        .sort({ lastUpdated: -1, updatedAt: -1 })
+        .limit(50)
+        .populate('materialId', 'name category unit')
+        .populate('supplierId', 'username profile.companyName profile.verified')
+        .lean();
+
+      return ApiResponse.success(res, { updates, total: updates.length });
+    } catch (error) {
+      next(error);
+    }
+  }
+
   // Get system health
   async getSystemHealth(req, res, next) {
     try {
@@ -286,6 +304,11 @@ class AdminController {
 
       const start = new Date(startDate);
       const end = new Date(endDate);
+      if (Number.isNaN(start.getTime()) || Number.isNaN(end.getTime()) || start > end) {
+        throw new ValidationError('A valid date range is required');
+      }
+      start.setHours(0, 0, 0, 0);
+      end.setHours(23, 59, 59, 999);
 
       let report = {};
 
@@ -354,16 +377,17 @@ class AdminController {
     });
 
     const avgPrice = await Price.aggregate([
-      { $match: { isActive: true } },
+      { $match: { isActive: true, lastUpdated: { $gte: start, $lte: end } } },
       { $group: { _id: null, avg: { $avg: '$price' } } },
     ]);
+    const periodDays = Math.max(1, Math.ceil((end - start) / (1000 * 60 * 60 * 24)));
 
     return {
       type: 'prices',
       totalPrices,
       updatedPrices,
       averagePrice: avgPrice.length > 0 ? avgPrice[0].avg : 0,
-      updateFrequency: updatedPrices > 0 ? (updatedPrices / 30).toFixed(2) + '/day' : '0/day',
+      updateFrequency: updatedPrices > 0 ? (updatedPrices / periodDays).toFixed(2) + '/day' : '0/day',
     };
   }
 

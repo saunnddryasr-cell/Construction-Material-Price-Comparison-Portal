@@ -48,6 +48,34 @@ describe('Public API', () => {
     });
   });
 
+  it('serves the material and supplier directory APIs', async () => {
+    const [materialsResponse, suppliersResponse] = await Promise.all([
+      request(app).get('/api/materials'),
+      request(app).get('/api/suppliers'),
+    ]);
+
+    expect(materialsResponse.status).toBe(200);
+    expect(Array.isArray(materialsResponse.body.data.materials)).toBe(true);
+    expect(suppliersResponse.status).toBe(200);
+    expect(Array.isArray(suppliersResponse.body.data.suppliers)).toBe(true);
+  });
+
+  it('serves price comparison data for a material category', async () => {
+    await Material.create({
+      name: 'Portland Cement',
+      category: 'cement',
+      unit: 'bag',
+    });
+
+    const response = await request(app)
+      .get('/api/prices/compare')
+      .query({ materialId: 'cement' });
+
+    expect(response.status).toBe(200);
+    expect(response.body.data.material.name).toBe('Portland Cement');
+    expect(response.body.data.quotes).toEqual([]);
+  });
+
   it('requires authentication before accepting an inquiry', async () => {
     const response = await request(app)
       .post('/api/inquiries')

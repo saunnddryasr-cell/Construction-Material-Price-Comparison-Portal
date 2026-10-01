@@ -1,22 +1,15 @@
 require('dotenv').config();
 
 const app = require('./app');
-const { connectDatabase } = require('./config/database');
+const PORT = Number(process.env.PORT) || 5000;
 
-const port = process.env.PORT || 5000;
-
-// ✅ CORRECT — works everywhere
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on ${PORT}`);
+const server = app.listen(PORT, () => {
+  console.log(`API server listening on port ${PORT}`);
 });
 
+server.on('error', (error) => {
+  console.error('Failed to start the API server:', error.message);
+  process.exitCode = 1;
+});
 
-if (require.main === module) {
-  startServer().catch((error) => {
-    console.error('Failed to start the API server:', error.message);
-    process.exitCode = 1;
-  });
-}
-
-module.exports = { startServer };
+module.exports = app;
