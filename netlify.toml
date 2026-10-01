@@ -4,4 +4,4 @@
   publish = "dist"
 
 [build.environment]
-  VITE_API_URL = "https://construction-material-pr-git-b13bf8-saunnddryasr-cells-projects.vercel.app/api"
+  VITE_API_URL = "https://construction-material-price-compari.vercel.app/api"
