@@ -8,7 +8,12 @@ const normalizeOrigin = (value) => {
   try {
     return new URL(value).origin;
   } catch {
-    throw new Error('CORS_ORIGIN and FRONTEND_URL must contain valid origins');
+    // eslint-disable-next-line no-console
+    console.error(
+      `Ignoring invalid CORS origin "${value}" from CORS_ORIGIN/FRONTEND_URL. `
+        + 'Expected a full URL such as https://example.com.',
+    );
+    return null;
   }
 };
 
@@ -18,7 +23,8 @@ const getCorsOptions = (env = process.env) => {
     .flatMap((value) => value.split(','))
     .map((value) => value.trim())
     .filter(Boolean)
-    .map((value) => normalizeOrigin(value.trim()));
+    .map((value) => normalizeOrigin(value.trim()))
+    .filter(Boolean);
   const allowedOrigins = new Set(configuredOrigins);
 
   if (env.NODE_ENV !== 'production') {

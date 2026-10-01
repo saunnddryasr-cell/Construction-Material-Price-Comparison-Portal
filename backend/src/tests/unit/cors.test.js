@@ -24,4 +24,15 @@ describe('CORS configuration', () => {
 
     expect(callback).toHaveBeenCalledWith(expect.any(Error));
   });
+
+  it('does not crash when CORS_ORIGIN contains a malformed value', () => {
+    const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+
+    expect(() => getCorsOptions({
+      NODE_ENV: 'production',
+      CORS_ORIGIN: 'https://frontend.example.com,not-a-valid-origin',
+    })).not.toThrow();
+
+    errorSpy.mockRestore();
+  });
 });
