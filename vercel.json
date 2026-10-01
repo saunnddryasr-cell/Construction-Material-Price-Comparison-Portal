@@ -1,0 +1,9 @@
+{
+  "buildCommand": "cd frontend && npm install && npm run build",
+  "outputDirectory": "frontend/dist",
+  "build": {
+    "env": {
+      "VITE_API_URL": "https://construction-material-price-compari.vercel.app/api"
+    }
+  }
+}
