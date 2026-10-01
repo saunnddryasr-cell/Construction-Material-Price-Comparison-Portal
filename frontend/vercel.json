@@ -1,4 +1,9 @@
 {
+  "build": {
+    "env": {
+      "VITE_API_URL": "https://construction-material-pr-git-b13bf8-saunnddryasr-cells-projects.vercel.app/api"
+    }
+  },
   "rewrites": [
     {
       "source": "/(.*)",
